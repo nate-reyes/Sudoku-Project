@@ -25,6 +25,8 @@ class SudokuGenerator:
     def __init__(self, row_length, removed_cells):
         self.row_length=row_length
         self.removed_cells=removed_cells
+        self.board=[[0 for i in range(self.row_length)] for i in range(self.row_length)]
+        self.box_length=int(math.sqrt(self.row_length))
         
 
     '''
@@ -44,7 +46,7 @@ class SudokuGenerator:
 	Return: None
     '''
     def print_board(self):
-        pass
+        print(self.board)
 
     '''
 	Determines if num is contained in the specified row (horizontal) of the board
@@ -57,9 +59,8 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_row(self, row, num):
-        vals=[]
         row=self.board[row]
-        if num in row:
+        if num in row: #row is a list, checks list for num
             return False
         return True
 
@@ -74,10 +75,10 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_col(self, col, num):
-        vals=[]
-        for row in self.board:
-            vals.append(row[col])
-        if num in vals:
+        vals=[] #initialize a list for col
+        for row in self.board: # iterate through board for rows
+            vals.append(row[col]) #append the value at the col value in each row
+        if num in vals: 
             return False
         return True
 
@@ -97,7 +98,10 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def valid_in_box(self, row_start, col_start, num):
-        pass
+        for row in self.board[row_start:row_start+self.box_length]: #only checks that range of rows
+            if num in row[col_start:col_start+self.box_length]:  #only checks that range of cols
+                return False
+        return True
     
     '''
     Determines if it is valid to enter num at (row, col) in the board
@@ -110,7 +114,17 @@ class SudokuGenerator:
 	Return: boolean
     '''
     def is_valid(self, row, col, num):
-        pass
+        if row%3==0: #boxes start at multiples of 3 including 0 (0,3,6)
+            row_start=row
+        else:
+            row_start=(row_start//3)*3 #if not at start, ground and make a multiple of 3
+        if col%3==0:
+            col_start=col
+        else:
+            col_start=(col_start//3)*3
+        if self.valid_in_row(row,num)==True and self.valid_in_col(col,num)==True and self.valid_in_box(row_start,col_start,num)==True:
+            return True
+        return False
 
     '''
     Fills the specified 3x3 box with values
