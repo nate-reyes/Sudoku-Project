@@ -117,14 +117,12 @@ class SudokuGenerator:
         if row%3==0: #boxes start at multiples of 3 including 0 (0,3,6)
             row_start=row
         else:
-            row_start=(row_start//3)*3 #if not at start, ground and make a multiple of 3
+            row_start=(row//3)*3 #if not at start, ground and make a multiple of 3
         if col%3==0:
             col_start=col
         else:
-            col_start=(col_start//3)*3
-        if self.valid_in_row(row,num)==True and self.valid_in_col(col,num)==True and self.valid_in_box(row_start,col_start,num)==True:
-            return True
-        return False
+            col_start=(col//3)*3
+        return (self.valid_in_row(row,num) and self.valid_in_col(col,num) and self.valid_in_box(row_start,col_start,num))
 
     '''
     Fills the specified 3x3 box with values
