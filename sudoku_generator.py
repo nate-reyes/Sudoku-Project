@@ -135,7 +135,20 @@ class SudokuGenerator:
 	Return: None
     '''
     def fill_box(self, row_start, col_start):
-        pass
+        def unused_in_box(num, row_start, col_start): #helper function that we're forced(?) to implement
+            for i in range(row_start, row_start + 3): #parse through given box
+                for j in range(col_start, col_start + 3):
+                    if num == self.board[i][j]:
+                        return False    #parse through given box, return false if given num is found in box
+            return True     #returns true if given number is NOT in box
+        
+        for i in range(row_start, row_start + 3): #parse through given box
+            for j in range(col_start, col_start + 3):
+                num = random.randint(1, 9)
+                while not unused_in_box(num, row_start, col_start): #if number already in box, pick new number and repeat)
+                    num = random.randint(1, 9)
+                self.board[i][j] = num #after verifying number doesn't exist in box, add number to box
+
     
     '''
     Fills the three boxes along the main diagonal of the board
@@ -145,7 +158,8 @@ class SudokuGenerator:
 	Return: None
     '''
     def fill_diagonal(self):
-        pass
+        for i in range (0, 7, 3): #fills boxes at coords (0,0), (3,3), and (6,6)
+            self.fill_box(i, i)
 
     '''
     DO NOT CHANGE
@@ -211,7 +225,15 @@ class SudokuGenerator:
 	Return: None
     '''
     def remove_cells(self):
-        pass
+        cells_removed = 0
+        while cells_removed < self.removed_cells + 1: # removes "self.removed_cells" amount of cells
+            row = random.randint(1, 9)
+            col = random.randint(1, 9)
+            if self.board[row][col] == 0: # check for repeating removal
+                continue
+            else:
+                self.board[row][col] = 0 #after verifying removal is new, remove cell and increment count
+                cells_removed += 1
 
 '''
 DO NOT CHANGE
@@ -235,3 +257,59 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
+
+class Cell():
+    def __init__(self, value, row, col, screen):
+        self.value = value
+        self.row = row
+        self.col = col
+        self.screen = screen
+    
+    def set_cell_value(self, value):
+        self.value = value
+
+    def set_sketched_value(self, value):
+        self.sketched_value = value
+
+    def draw(self):
+        pass
+
+class Board():
+    def __init__(self, width, height, screen, difficulty):
+        self.width = width
+        self.height = height
+        self.screen = screen
+        self.difficulty = difficulty
+
+    def draw(self):
+        pass
+
+    def select(self, row, col):
+        pass
+
+    def click(self, x, y):
+        pass
+
+    def clear(self):
+        pass
+
+    def sketch(self, value):
+        pass
+
+    def place_number(self, value):
+        pass
+
+    def reset_to_original(self):
+        pass
+
+    def is_full(self):
+        pass
+
+    def update_board(self):
+        pass
+
+    def find_empty(self):
+        pass
+
+    def check_board(self):
+        pass
