@@ -227,8 +227,8 @@ class SudokuGenerator:
     def remove_cells(self):
         cells_removed = 0
         while cells_removed < self.removed_cells + 1: # removes "self.removed_cells" amount of cells
-            row = random.randint(1, 9)
-            col = random.randint(1, 9)
+            row = random.randint(0, 8)
+            col = random.randint(0, 8)
             if self.board[row][col] == 0: # check for repeating removal
                 continue
             else:

@@ -47,8 +47,8 @@ class Board:
         self.selected_row = 0
         self.selected_col = 0
 
-        # generate_sudoku now returns (board, solution)
-        self.board, self.solution = generate_sudoku(9, difficulty)
+        #make board
+        self.board = generate_sudoku(9, difficulty)
 
         self.original = []
         for r in range(9):
@@ -137,11 +137,30 @@ class Board:
         return None
 
     def check_board(self):
-        # Compare every cell against the stored solution
+        # 1. Check all rows
         for r in range(9):
-            for c in range(9):
-                if self.cells[r][c].value != self.solution[r][c]:
+            row_values = [self.cells[r][c].value for c in range(9)]
+            if len(set(row_values)) != 9:
+                return False
+
+        #check all columns
+        for c in range(9):
+            col_values = [self.cells[r][c].value for r in range(9)]
+            if len(set(col_values)) != 9:
+                return False
+
+        #check all 3x3 boxes
+        for box_row in range(3):
+            for box_col in range(3):
+                box_values = []
+                for r in range(3):
+                    for c in range(3):
+                        box_values.append(self.cells[box_row * 3 + r][box_col * 3 + c].value)
+                
+                if len(set(box_values)) != 9:
                     return False
+
+        #if passes all checks, return true
         return True
 
 
